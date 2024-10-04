@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:chatsy/constants.dart';
 
 class ChatScreen extends StatefulWidget {
-  static String route = 'chatScreen';
+  static const String route = 'chatScreen';
   const ChatScreen({super.key});
 
   @override

@@ -4,14 +4,43 @@ import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatefulWidget {
   // This static screen will help us prevent the app from crashing in case of any change on the string
-  static String route = 'welcomeScreen';
+  static const String route = 'welcomeScreen';
   const WelcomeScreen({super.key});
 
   @override
   State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _WelcomeScreenState extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
+  // The 'with SingleTickerProviderStateMixin' gives our _WelcomeScreenState the ability to act as a ticker for a single animation. Had we had multiple animations then we would have used 'with TickerProviderStateMixin'.
+
+  // The first thing that we need to do before creating the animation is we need to create the animation controller.
+  late AnimationController controller;
+  late Animation animation;
+
+  // Since we want our animation to be called at the initialization stage, we hav to override the initState() method.
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+
+    // The Curved animation class helps us move our animations in an uneven order
+    animation = CurvedAnimation(
+        parent: controller,
+        curve: Curves
+            .decelerate); // NB: When using the curve make sure the upperbound is NOT greater than one, else the app will crash
+
+    controller.forward();
+
+    controller.addListener(() {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,9 +53,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Container(
-                  height: 60.0,
-                  child: Image.asset('assets/images/logo.png'),
+                Hero(
+                  tag: 'logo',
+                  child: Container(
+                    height: animation.value * 60,
+                    child: Image.asset('assets/images/logo.png'),
+                  ),
                 ),
                 const Text(
                   'Quick Chat',
