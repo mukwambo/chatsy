@@ -1,6 +1,8 @@
 import 'package:chatsy/screens/login_screen.dart';
 import 'package:chatsy/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:chatsy/components/rounded_button.dart';
 
 class WelcomeScreen extends StatefulWidget {
   // This static screen will help us prevent the app from crashing in case of any change on the string
@@ -19,13 +21,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   late AnimationController controller;
   late Animation animation;
 
-  // Since we want our animation to be called at the initialization stage, we hav to override the initState() method.
+  // Since we want our animation to be called at the initialization stage, we have to override the initState() method.
   @override
   void initState() {
     super.initState();
     controller = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
+      // vsync is the TickerProvider for the current context which in this case is our _WelcomeScreenState therefore we use the reserved word 'this' since we are in the sam class as the _WelcomeScreenState.
     );
 
     // The Curved animation class helps us move our animations in an uneven order
@@ -34,9 +37,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         curve: Curves
             .decelerate); // NB: When using the curve make sure the upperbound is NOT greater than one, else the app will crash
 
-    controller.forward();
+    controller
+        .forward(); // This tells the controller to start the animation from 0 all the way to the upperbound. Had we wanted the animation to start from the upperbound downwards, we could have used 'controller.reverse()'
 
     controller.addListener(() {
+      // The .addListener listens for change in the value as it moves through the provided value (upperBound)
       setState(() {});
     });
   }
@@ -55,61 +60,43 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               children: <Widget>[
                 Hero(
                   tag: 'logo',
-                  child: Container(
+                  child: SizedBox(
                     height: animation.value * 60,
                     child: Image.asset('assets/images/logo.png'),
                   ),
                 ),
-                const Text(
-                  'Quick Chat',
+                DefaultTextStyle(
                   style: TextStyle(
-                    fontSize: 45.0,
+                    fontSize: controller.value * 45,
                     fontWeight: FontWeight.w900,
+                    color: Colors.black87,
                   ),
-                ),
+                  child: AnimatedTextKit(
+                    totalRepeatCount: 5,
+                    animatedTexts: [
+                      TypewriterAnimatedText('Quick Chat'),
+                    ],
+                  ),
+                )
               ],
             ),
             const SizedBox(
               height: 48.0,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                elevation: 5.0,
-                color: Colors.lightBlueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                child: MaterialButton(
-                  onPressed: () {
-                    //Go to login screen.
-                    Navigator.pushNamed(context, LoginScreen.route);
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: const Text(
-                    'Log In',
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () {
-                    //Go to registration screen.
-                    Navigator.pushNamed(context, RegistrationScreen.route);
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: const Text(
-                    'Register',
-                  ),
-                ),
-              ),
-            ),
+            RoundedButton(
+                buttonText: 'Login',
+                buttonColor: Colors.lightBlueAccent,
+                onPressed: () {
+                  // Navigate to the login screen
+                  Navigator.pushNamed(context, LoginScreen.route);
+                }),
+            RoundedButton(
+                buttonText: 'Register',
+                buttonColor: Colors.blueAccent,
+                onPressed: () {
+                  // Navigate to the registration screen
+                  Navigator.pushNamed(context, RegistrationScreen.route);
+                }),
           ],
         ),
       ),
