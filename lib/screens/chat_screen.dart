@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chatsy/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatScreen extends StatefulWidget {
   static const String route = 'chatScreen';
@@ -10,6 +11,29 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  // Since we will need the email of the user to send the messages, we import the auth and create an instance of the auth class.
+  final _auth = FirebaseAuth.instance;
+  late User loggedInUser;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  // The method below will check if there is any current signe in user si that we use the user's email to send the messages
+  void getCurrentUser() async {
+    try {
+      final user = await _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+        print(loggedInUser.email);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

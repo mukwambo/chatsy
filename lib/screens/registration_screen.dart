@@ -1,5 +1,7 @@
 import 'package:chatsy/components/rounded_button.dart';
 import 'package:chatsy/constants.dart';
+import 'package:chatsy/screens/chat_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -11,6 +13,11 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  final _auth = FirebaseAuth.instance;
+  // These variables will store the the input from the text fields i.e the users' email and password
+  late String email;
+  late String password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,8 +39,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 48.0,
             ),
             TextField(
+              // Email text field
+              keyboardType: TextInputType.emailAddress,
+              textAlign: TextAlign.center,
               onChanged: (value) {
-                //Do something with the user input.
+                email = value;
               },
               decoration: kTextFieldDecoration,
             ),
@@ -41,8 +51,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 8.0,
             ),
             TextField(
+              // Password text field
+              obscureText: true,
+              textAlign: TextAlign.center,
               onChanged: (value) {
-                //Do something with the user input.
+                password = value;
               },
               decoration: kTextFieldDecoration,
             ),
@@ -50,9 +63,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 24.0,
             ),
             RoundedButton(
-                buttonText: 'Register',
-                buttonColor: Colors.lightBlue,
-                onPressed: () {})
+              buttonText: 'Register',
+              buttonColor: Colors.lightBlue,
+              onPressed: () async {
+                try {
+                  final newUser = await _auth.createUserWithEmailAndPassword(
+                      email: email, password: password);
+                  // Check if new user is not null before navigating the user to the chat screen
+                  if (newUser != null) {
+                    Navigator.pushNamed(context, ChatScreen.route);
+                  }
+                } catch (e) {
+                  print(e);
+                }
+              },
+            )
           ],
         ),
       ),

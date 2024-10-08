@@ -1,6 +1,7 @@
 import 'package:chatsy/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:chatsy/components/rounded_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String route = 'loginScreen';
@@ -32,18 +33,20 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 48.0,
             ),
             TextField(
-              onChanged: (value) {
-                //Do something with the user input.
-              },
+              // Email text field
+              keyboardType: TextInputType.emailAddress,
+              textAlign: TextAlign.center,
+              onChanged: (value) {},
               decoration: kTextFieldDecoration,
             ),
             const SizedBox(
               height: 8.0,
             ),
             TextField(
-              onChanged: (value) {
-                //Do something with the user input.
-              },
+              // Password text field
+              obscureText: true,
+              textAlign: TextAlign.center,
+              onChanged: (value) {},
               decoration: kTextFieldDecoration,
             ),
             const SizedBox(
