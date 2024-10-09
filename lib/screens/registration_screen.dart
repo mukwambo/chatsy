@@ -45,7 +45,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               onChanged: (value) {
                 email = value;
               },
-              decoration: kTextFieldDecoration,
+              decoration: kTextFieldDecoration.copyWith(
+                hintText: kEmailHintText,
+              ),
             ),
             const SizedBox(
               height: 8.0,
@@ -57,7 +59,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               onChanged: (value) {
                 password = value;
               },
-              decoration: kTextFieldDecoration,
+              decoration: kTextFieldDecoration.copyWith(
+                hintText: kPasswordHintText,
+              ),
             ),
             const SizedBox(
               height: 24.0,

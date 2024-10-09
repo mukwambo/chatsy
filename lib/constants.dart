@@ -22,7 +22,7 @@ const String kEmailHintText = 'Enter your email';
 const String kPasswordHintText = 'Enter your password';
 
 const kTextFieldDecoration = InputDecoration(
-  hintText: kPasswordHintText,
+  hintText: '',
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   border: OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
