@@ -34,11 +34,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Hero(
-                tag: 'logo',
-                child: SizedBox(
-                  height: 200.0,
-                  child: Image.asset('assets/images/logo.png'),
+              Flexible(
+                child: Hero(
+                  tag: 'logo',
+                  child: SizedBox(
+                    height: 200.0,
+                    child: Image.asset('assets/images/logo.png'),
+                  ),
                 ),
               ),
               const SizedBox(
@@ -76,7 +78,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 buttonText: 'Register',
                 buttonColor: Colors.lightBlue,
                 onPressed: () async {
-                  // This setSate will initialize the spinning roccess
+                  // This setSate will initialize the spinning process
                   setState(() {
                     _showSpinner = true;
                   });
